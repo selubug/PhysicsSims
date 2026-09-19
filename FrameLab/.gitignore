@@ -1,0 +1,11 @@
+build/
+.vs/
+.idea/
+.vscode/
+*.sln
+*.vcxproj*
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+michelson_morley_sweep.csv
