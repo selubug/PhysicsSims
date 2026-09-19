@@ -73,11 +73,6 @@ These values produce the historically relevant order of magnitude: roughly four-
 
 See [`docs/PHYSICS.md`](docs/PHYSICS.md) for the derivation and interpretation.
 
-## Why the code is separate from Unreal
-
-FrameLab's goal is to demonstrate both scientific C++ and high-end interactive visualization. Physics calculations use ordinary C++ types and SI units. Unreal-specific classes will be thin adapters, making it possible to test the equations independently and reuse them in command-line programs, Unreal, or future visualization front ends.
-
-See [`UnrealIntegration/README.md`](UnrealIntegration/README.md) for the planned Unreal bridge.
 
 ## Planned modules
 
