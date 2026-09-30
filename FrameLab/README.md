@@ -1,84 +1,94 @@
 # FrameLab
 
-**FrameLab** is a modern C++ physics-simulation core designed to power interactive Unreal Engine visualizations of important experiments and competing physical models.
+FrameLab is a C++20 physics simulation library focused on comparing competing physical models in a way that is both mathematically explicit and easy to visualize.
 
-The first module implements the **Michelson-Morley interferometer** and compares:
+The current implementation centers on a Michelson-Morley interferometer and compares:
 
-- the original/simple stationary-ether prediction;
-- special relativity in the interferometer rest frame.
+- a classical stationary-ether model
+- a special-relativity model
 
-The scientific code is deliberately independent of Unreal Engine. Unreal will act as the real-time 3D visualization and interaction layer, while this library remains testable from any standard C++20 toolchain.
+This project is intentionally separated from Unreal Engine: the physics logic lives in a pure C++ core that can be tested, benchmarked, and reused independently, while an Unreal layer can later provide immersive real-time visualization.
 
-## Current milestone
+## Why this project exists
 
-- reusable `IMichelsonMorleyModel` interface
-- exact arbitrary-angle stationary-ether travel-time calculation
-- special-relativity model
-- 90-degree rotation fringe-shift calculation
-- 0-180 degree simulation sweep
-- CSV export for visualization
-- automated tests
-- Unreal integration blueprint / adapter plan
+FrameLab is designed to make the historical physics comparison concrete:
 
-## Architecture
+- model the same experimental setup under different assumptions
+- compute fringe shifts and optical path differences
+- export sweep data for plotting or animation
+- keep the physics engine reusable across tools and frontends
+
+## Current capabilities
+
+- exact travel-time calculation for a Michelson-Morley interferometer at arbitrary arm angle
+- comparison of stationary-ether and special-relativity predictions
+- 90-degree rotation fringe-shift analysis
+- 0-180 degree sweep generation
+- CSV export for downstream visualization
+- automated CTest coverage for the core experiment logic
+
+## Repository layout
 
 ```text
-                     Unreal Engine (next layer)
-               UI / Actors / beams / materials
-                             |
-                     thin Unreal adapter
-                             |
-                +------------+------------+
-                |       PhysicsCore       |
-                |      pure C++20         |
-                +------------+------------+
-                             |
-          +------------------+------------------+
-          |                                     |
- ClassicalEtherModel                 SpecialRelativityModel
-          |                                     |
-          +------------------+------------------+
-                             |
-                 MichelsonMorleyResult
+FrameLab/
+├── PhysicsCore/        # physics models and calculation code
+├── apps/               # CLI demo application
+├── docs/               # derivations and notes
+├── tests/              # automated tests
+├── UnrealIntegration/  # planned Unreal bridge / adapter layer
+├── CMakeLists.txt      # build configuration
+├── README.md           # project overview
+└── .gitignore
 ```
 
-## Build
+## Build and run
+
+From the repository root:
 
 ```bash
-cmake -S . -B build
-cmake --build build
-ctest --test-dir build --output-on-failure
+cmake -S FrameLab -B FrameLab/build
+cmake --build FrameLab/build
+ctest --test-dir FrameLab/build --output-on-failure
 ```
 
 Run the demo:
 
 ```bash
-./build/framelab_cli
+./FrameLab/build/framelab_cli
 ```
 
-On a multi-config generator such as Visual Studio, the executable may be under `build/Debug/` or `build/Release/`.
+The demo generates `michelson_morley_sweep.csv`, containing a 1-degree sweep from 0 through 180 degrees.
 
-The program also writes `michelson_morley_sweep.csv` containing a 1-degree sweep from 0 through 180 degrees.
+## Example physical setup
 
-## Example parameters
+The default demo models:
 
-The default demo uses:
+- arm length: 11 m
+- wavelength: 500 nm
+- ether speed: 29.78 km/s
+- starting orientation: 0 degrees
 
-- one-way modeled arm length: `11 m`
-- wavelength: `500 nm`
-- hypothetical ether speed: `29.78 km/s`
-- starting orientation: `0 degrees`
+This produces the historically relevant order-of-magnitude comparison between the classical ether prediction and the special-relativity result.
 
-These values produce the historically relevant order of magnitude: roughly four-tenths of a fringe predicted by the simple stationary-ether model after a 90-degree rotation, while the special-relativity model returns zero orientation-dependent shift.
+## Documentation
 
-See [`docs/PHYSICS.md`](docs/PHYSICS.md) for the derivation and interpretation.
-
+- `docs/PHYSICS.md` describes the underlying derivation and interpretation
 
 ## Planned modules
 
-- Lorentz-FitzGerald contraction model
-- light-clock / Lorentz-transformation visualizer
+FrameLab is intended to grow beyond the Michelson-Morley comparison into a broader physics simulation toolkit, including:
+
+- Lorentz-FitzGerald contraction models
+- light-clock and Lorentz-transformation visualizations
 - Newtonian orbital mechanics
 - numerical integrators (Euler, Verlet, RK4)
-- N-body gravity / three-body chaos
-- relativistic corrections and comparison experiments
+- N-body gravity and chaotic-system examples
+- additional relativity and comparison experiments
+
+## License
+
+This project does not currently declare a repository license.
+
+## Status
+
+FrameLab is a working prototype for physics-model comparison and visualization, with a strong emphasis on testable numerical behavior and future integration with real-time 3D tooling.
