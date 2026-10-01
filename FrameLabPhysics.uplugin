@@ -1,0 +1,10 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "0.1.0",
+  "FriendlyName": "FrameLab Physics",
+  "Description": "Blueprint bridge and Michelson-Morley comparison preview using the shared FrameLab C++ core.",
+  "Category": "Science",
+  "CanContainContent": false,
+  "Modules": [{ "Name": "FrameLabPhysics", "Type": "Runtime", "LoadingPhase": "Default" }]
+}
